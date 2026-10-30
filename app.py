@@ -14,45 +14,45 @@ def obtener_conexion():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-# Trae todas las noticias guardadas (las mas nuevas primero)
-def obtener_noticias():
+# Trae todos los reportes guardados (los mas nuevos primero)
+def obtener_reportes():
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT * FROM noticias ORDER BY id DESC")
-        noticias = cursor.fetchall()
+        cursor.execute("SELECT * FROM reportes ORDER BY id DESC")
+        reportes = cursor.fetchall()
     conexion.close()
-    return noticias
+    return reportes
 
 @app.route('/')
 def index():
     try:
-        noticias = obtener_noticias()
-        return render_template('index.html', noticias=noticias)
+        reportes = obtener_reportes()
+        return render_template('index.html', reportes=reportes)
     except Exception as e:
-        return render_template('index.html', noticias=[], mensaje=f"Hubo un error: {e}")
+        return render_template('index.html', reportes=[], mensaje=f"Hubo un error: {e}")
 
 @app.route('/guardar', methods=['POST'])
 def guardar():
-    titulo = request.form['titulo']
-    red_social = request.form['red_social']
-    enlace = request.form['enlace']
-    estado = request.form['estado']
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
     fecha = request.form['fecha']
+    red_social = request.form['red_social']
+    reporte = request.form['reporte']
 
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            sql = "INSERT INTO noticias (titulo, red_social, enlace, estado, fecha) VALUES (%s, %s, %s, %s, %s)"
-            cursor.execute(sql, (titulo, red_social, enlace, estado, fecha))
+            sql = "INSERT INTO reportes (nombre, apellido, fecha, red_social, reporte) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (nombre, apellido, fecha, red_social, reporte))
             conexion.commit()
         conexion.close()
-        mensaje = "Noticia registrada"
-        noticias = obtener_noticias()
+        mensaje = "Reporte registrado"
+        reportes = obtener_reportes()
     except Exception as e:
         mensaje = f"Hubo un error: {e}"
-        noticias = []
+        reportes = []
 
-    return render_template('index.html', mensaje=mensaje, noticias=noticias)
+    return render_template('index.html', mensaje=mensaje, reportes=reportes)
 
 if __name__ == '__main__':
     app.run(debug=True)

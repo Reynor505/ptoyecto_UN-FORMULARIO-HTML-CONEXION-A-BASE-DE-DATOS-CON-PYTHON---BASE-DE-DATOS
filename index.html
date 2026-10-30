@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Fake news en redes sociales</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 15px; }
-        input, select { padding: 6px; margin-bottom: 12px; width: 100%; box-sizing: border-box; }
-        button { padding: 8px 16px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #eee; }
-        .mensaje { font-weight: bold; }
-    </style>
 </head>
 <body>
-    <h1>Registro de fake news en redes sociales</h1>
+    <h1>Reporte de fake news en redes sociales</h1>
 
     <form action="/guardar" method="POST">
-        <label>Titulo de la noticia:</label><br>
-        <input type="text" name="titulo" required><br>
+        <label>Nombre:</label><br>
+        <input type="text" name="nombre" required><br><br>
+
+        <label>Apellido:</label><br>
+        <input type="text" name="apellido" required><br><br>
+
+        <label>Fecha:</label><br>
+        <input type="date" name="fecha" required><br><br>
 
         <label>Red social:</label><br>
         <select name="red_social" required>
@@ -27,53 +24,43 @@
             <option>TikTok</option>
             <option>Instagram</option>
             <option>X (Twitter)</option>
-        </select><br>
+        </select><br><br>
 
-        <label>Enlace de la publicacion:</label><br>
-        <input type="url" name="enlace" required><br>
-
-        <label>Estado:</label><br>
-        <select name="estado" required>
-            <option>En revision</option>
-            <option>Falsa</option>
-            <option>Verdadera</option>
-        </select><br>
-
-        <label>Fecha:</label><br>
-        <input type="date" name="fecha" required><br>
+        <label>Reporte:</label><br>
+        <textarea name="reporte" rows="5" cols="40" required></textarea><br><br>
 
         <button type="submit">Guardar</button>
     </form>
 
     {% if mensaje %}
-        <p class="mensaje">{{ mensaje }}</p>
+        <p>{{ mensaje }}</p>
     {% endif %}
 
-    <h2>Noticias registradas</h2>
+    <h2>Reportes registrados</h2>
 
-    {% if noticias %}
-    <table>
+    {% if reportes %}
+    <table border="1" cellpadding="5">
         <tr>
             <th>ID</th>
-            <th>Titulo</th>
-            <th>Red social</th>
-            <th>Enlace</th>
-            <th>Estado</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
             <th>Fecha</th>
+            <th>Red social</th>
+            <th>Reporte</th>
         </tr>
-        {% for n in noticias %}
+        {% for r in reportes %}
         <tr>
-            <td>{{ n.id }}</td>
-            <td>{{ n.titulo }}</td>
-            <td>{{ n.red_social }}</td>
-            <td><a href="{{ n.enlace }}" target="_blank">Ver</a></td>
-            <td>{{ n.estado }}</td>
-            <td>{{ n.fecha }}</td>
+            <td>{{ r.id }}</td>
+            <td>{{ r.nombre }}</td>
+            <td>{{ r.apellido }}</td>
+            <td>{{ r.fecha }}</td>
+            <td>{{ r.red_social }}</td>
+            <td>{{ r.reporte }}</td>
         </tr>
         {% endfor %}
     </table>
     {% else %}
-        <p>Aun no hay noticias registradas.</p>
+        <p>Aun no hay reportes registrados.</p>
     {% endif %}
 </body>
 </html>
